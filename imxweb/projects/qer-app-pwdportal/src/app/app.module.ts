@@ -54,13 +54,14 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { PasswordModule, QaLoginModule, PasscodeLoginModule, ProfileModule, QerModule } from 'qer';
 import appConfigJson from '../appconfig.json';
 import { PwdSqlWizardApiService } from './pwd-sql-wizard-api.service';
+import { ChangePasswdComponent } from './change-passwd/change-passwd.component';
 
 export const HEADLESS_BASEHREF = '/headless';
 export function getBaseHref(): string {
   return location.href.includes('headless') ? HEADLESS_BASEHREF : '';
 }
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ChangePasswdComponent],
   imports: [
     AppRoutingModule,
     AuthenticationModule,

@@ -35,9 +35,12 @@
         {{'#LDS#Create new account' | translate }}
       </button>
     </div>
+    
+    
 
     <ng-template #loginMask>
       <div class="imx-loginMask">
+        
         <div *ngIf="sessionState?.IsLoggedOut" class="imx-loginData">
           <div *ngIf="configurationProviders" class="imx-loginInput">
             <mat-form-field>
@@ -57,14 +60,26 @@
               [placeholder]="authProp.display" [(ngModel)]="loginData[authProp.name]" (keyup.enter)="login()"
               class="imx-login-input" />
           </div>
+          
         </div>
         <div *ngIf="sessionState?.IsAwaitingSecondaryAuth">
           <imx-2fahost></imx-2fahost>
         </div>
+      
       </div>
+      
     </ng-template>
+    <div class="imx-usermessage" *ngIf="!sessionState?.isOAuth">
+      <br>
+      <a href="change-passwd.component.html" style="color:white;" >¿Necesita cambiar o recuperar su contraseña? Haga click aqui</a>
+    </div>
+          
   </div>
+  
 </div>
+
+
+
 <div class="imx-loginFooter">{{ product.name }}
   <br>{{ product.copyright }}
 </div>
