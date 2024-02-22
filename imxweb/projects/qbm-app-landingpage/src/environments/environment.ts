@@ -33,7 +33,7 @@ import packageJson from '../../package.json';
 
 export const environment = {
   production: false,
-  clientUrl: 'http://localhost:8182',
+  clientUrl: 'https://iam-desarrollo1.eprinsa.org/ApiServer',
   appName: packageJson.name,
   appVersion: packageJson.version
 };

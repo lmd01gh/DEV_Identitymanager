@@ -214,4 +214,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     // Prevent the content from being cleared incase the sidesheet is closed unsuccessfully
     this.initCustomAuthFlowView(this.newUserConfigProvider, false);
   }
+  public holamundo(): void {
+    console.log("HOLA MUNDO ");
+  }
 }
+

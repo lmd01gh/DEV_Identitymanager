@@ -28,15 +28,17 @@ import { InjectionToken, NgModule } from '@angular/core';
 import { Routes, RouterModule, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthenticationGuardService, LoginComponent, RouteGuardService } from 'qbm';
 import { PasswordDashboardComponent, PasswordResetComponent, PasswordQuestionsComponent } from 'qer';
+import { CccpasswdchangeComponent } from './cccpasswdchange/cccpasswdchange.component';
 
 const externalUrlProvider = new InjectionToken('externalUrlRedirectResolver');
 
 const routes: Routes = [
   {
     path: '',
-    component: LoginComponent,
-    canActivate: [AuthenticationGuardService],
+    component: CccpasswdchangeComponent,
     resolve: [RouteGuardService]
+   /* canActivate: [AuthenticationGuardService],*/
+    /*resolve: [RouteGuardService]*/
   },
   {
     path: 'dashboard',
