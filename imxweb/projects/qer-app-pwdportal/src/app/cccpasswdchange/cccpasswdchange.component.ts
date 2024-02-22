@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {  SplashService } from 'qbm';
 
 
+
 @Component({
   selector: 'imx-cccpasswdchange',
   templateUrl: './cccpasswdchange.component.html'
