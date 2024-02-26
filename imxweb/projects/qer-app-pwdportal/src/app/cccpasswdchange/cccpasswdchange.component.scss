@@ -1,0 +1,68 @@
+@import '@elemental-ui/core/src/styles/_eui_palette.scss';
+.page {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100vh;
+    background-color: white;
+  }
+  
+  
+  .pageContent {
+    margin: 20px 30px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: inherit;
+  }
+  
+  .titulo {
+    font-size: larger;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-align: center;
+
+  }
+  .imx-type-selector {
+    
+    > .mat-radio-button {
+      margin-left: 25px;
+    }
+  }
+
+  .imx-selection-stepper {
+    //flex: 1 1 auto;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+    overflow: hidden;
+
+  }
+  
+  .mat-headline {
+    line-height: 40px;
+    margin-left: 2em;
+    
+  }
+
+  .imx-step-button,
+  .imx-step-button-save {
+    display: flex;
+    > *:not(:last-child) {
+      margin-right: 10px;
+   
+    }
+    margin-left: 30%;    
+  }
+
+  @mixin stepper-margin {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    margin-left: 2em;
+  }
+  
+  .imx-stepper-content {
+    @include stepper-margin();
+    
+  }

@@ -45,6 +45,7 @@ import {
   Paginator,
   SqlWizardApiService,
   UserMessageModule,
+  CdrModule
 } from 'qbm';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -55,6 +56,7 @@ import { PasswordModule, QaLoginModule, PasscodeLoginModule, ProfileModule, QerM
 import appConfigJson from '../appconfig.json';
 import { PwdSqlWizardApiService } from './pwd-sql-wizard-api.service';
 import { CccpasswdchangeComponent } from './cccpasswdchange/cccpasswdchange.component';
+import {FormsModule} from '@angular/forms';
 
 export const HEADLESS_BASEHREF = '/headless';
 export function getBaseHref(): string {
@@ -78,6 +80,8 @@ export function getBaseHref(): string {
     PasscodeLoginModule,
     PasswordModule,
     CustomThemeModule,
+    FormsModule,
+    CdrModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

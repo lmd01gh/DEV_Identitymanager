@@ -1,7 +1,37 @@
 <div class="page">
-<p>cccpasswdchange works!</p>
+    <imx-mast-head></imx-mast-head>
+<br> 
+<br> 
 
-<button mat-button color="white" > Haga click aquí </button>
-<router-outlet></router-outlet>
+<h1 class="mat-headline">
+ <div>Procedimiento de Cambio o Recuperación de Contraseña</div>
+</h1>
+
+
+<mat-card class="imx-selection-stepper">
+<ng-container>
+    <mat-radio-group class="imx-type-selector"  data-imx-identifier="PinTemporal" [(ngModel)]="PinTemporal" >
+      <mat-radio-button [value]="false" data-imx-identifier="PinTemporal-false" >
+        Solicitar pin temporal de recuperación de contraseña
+      </mat-radio-button>
+      <mat-radio-button [value]="true" data-imx-identifier="PinTemporal-true">
+        He recibido un pin temporal para el cambio de contraseña
+      </mat-radio-button>
+    </mat-radio-group>
+  </ng-container>
+  <br>
+  <div class="imx-stepper-content">
+   Nombre de usuario <input matInput type="text" autocomplete="no" />
+  </div>
+  <br>
+</mat-card>
+<div class="imx-step-button">
+  <button data-imx-identifier="imx-passwdchange-next" mat-stroked-button color="primary">
+    Siguiente
+  </button>
+</div>
+
+<!--<form  [formGroup]="identityForm">
+</form>-->
 
 </div>
