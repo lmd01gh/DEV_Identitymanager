@@ -23,7 +23,11 @@
  * THIS SOFTWARE OR ITS DERIVATIVES.
  *
  */
-
+import { CommonModule } from '@angular/common';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CdkStepperModule } from '@angular/cdk/stepper';
+import {MatStepperModule} from '@angular/material/stepper';
+import { EuiLoadingService, EuiSidesheetRef, EuiSidesheetService, EUI_SIDESHEET_DATA } from '@elemental-ui/core';
 import { HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -31,7 +35,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EuiCoreModule, EuiMaterialModule } from '@elemental-ui/core';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { APP_BASE_HREF } from '@angular/common';
 import {
   AuthenticationModule,
@@ -56,7 +60,7 @@ import { PasswordModule, QaLoginModule, PasscodeLoginModule, ProfileModule, QerM
 import appConfigJson from '../appconfig.json';
 import { PwdSqlWizardApiService } from './pwd-sql-wizard-api.service';
 import { CccpasswdchangeComponent } from './cccpasswdchange/cccpasswdchange.component';
-import {FormsModule} from '@angular/forms';
+import { IdentitiesService } from 'qer';
 
 export const HEADLESS_BASEHREF = '/headless';
 export function getBaseHref(): string {
@@ -81,7 +85,12 @@ export function getBaseHref(): string {
     PasswordModule,
     CustomThemeModule,
     FormsModule,
+    ReactiveFormsModule,
     CdrModule,
+    CommonModule,
+    CdkStepperModule,
+    MatProgressBarModule,
+    MatStepperModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -118,9 +127,16 @@ export function getBaseHref(): string {
       useValue: getBaseHref(),
     },
     {
+      provide: EuiSidesheetService,
+    },
+    {
+      provide:IdentitiesService,
+    },
+    {
       provide: SqlWizardApiService,
       useClass: PwdSqlWizardApiService,
     },
+  
   ],
   bootstrap: [AppComponent],
   exports: [

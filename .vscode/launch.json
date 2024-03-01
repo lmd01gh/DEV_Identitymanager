@@ -12,7 +12,14 @@
             "name": "Open app.component.html",
             "url": "http://localhost:4200",
             "sourceMaps": true, 
-            "webRoot": "${workspaceFolder}/imxweb"
+            "webRoot": "${workspaceFolder}/imxweb",
+            "resolveSourceMapLocations":
+             [
+                 "${workspaceFolder}/**",
+                 "!**/node_modules/**"
+             ],
+             "trace": true
+            
             
         }
     ]

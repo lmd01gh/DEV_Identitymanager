@@ -1,4 +1,4 @@
-@import '@elemental-ui/core/src/styles/_eui_palette.scss';
+//@import '@elemental-ui/core/src/styles/_eui_palette.scss';
 .page {
     display: flex;
     flex-direction: column;
@@ -23,12 +23,22 @@
     text-align: center;
 
   }
-  .imx-type-selector {
-    
-    > .mat-radio-button {
-      margin-left: 25px;
-    }
+
+  .imx-type-radiogroup{
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0; 
+  
   }
+
+.imx-type-radiobuttom{
+
+color: primary;
+
+
+
+ }
+
 
   .imx-selection-stepper {
     //flex: 1 1 auto;
@@ -46,23 +56,4 @@
     
   }
 
-  .imx-step-button,
-  .imx-step-button-save {
-    display: flex;
-    > *:not(:last-child) {
-      margin-right: 10px;
-   
-    }
-    margin-left: 30%;    
-  }
 
-  @mixin stepper-margin {
-    margin-top: 16px;
-    margin-bottom: 16px;
-    margin-left: 2em;
-  }
-  
-  .imx-stepper-content {
-    @include stepper-margin();
-    
-  }
