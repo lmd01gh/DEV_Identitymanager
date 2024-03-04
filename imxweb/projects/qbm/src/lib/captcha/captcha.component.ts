@@ -37,10 +37,16 @@ export class CaptchaComponent {
 
     constructor(public readonly captchaSvc: CaptchaService, public readonly appConfig: AppConfigService) {
     }
+    
 
     @Input() builtInCaptchaUrl: string = 'passwordreset/captchaimage';
 
     isBuiltIn(): boolean {
         return this.captchaSvc.Mode == CaptchaMode.BuiltIn;
     }
+   // ngOnInit(): void {
+     //    console.log("llego")
+       
+      // }
+ 
 }

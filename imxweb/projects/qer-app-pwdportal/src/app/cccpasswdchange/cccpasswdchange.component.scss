@@ -57,3 +57,17 @@ color: primary;
   }
 
 
+  .captcha-container {
+    display: flex;
+  
+    input {
+     // flex: 1 2 auto;
+      width: inherit;
+    }
+  }  
+
+  
+  .mat-slider {
+    width: 60000px;
+    flex-grow: 2;
+  }

@@ -5,21 +5,112 @@
 
 <h1 class="mat-headline">
  <div>Procedimiento de Cambio o Recuperación de Contraseña</div>
+ 
 </h1>
 
+<mat-card class="imx-delegation-stepper">
+  <div>
+    
+    <mat-stepper linear #stepper >
+      <mat-step  [stepControl]="firstFormGroup">
+       <ng-template matStepLabel>Seleccione e introduzca nombre de usuario</ng-template>
+        <ng-container>
+          <div>
+          <mat-radio-group  class="imx-type-radiogroup" color="primary"  [(ngModel)]="ConPinTemporal" data-imx-identifier="ConPinTemporal" >
+            <mat-radio-button [value]="true" data-imx-identifier="ConPinTemporal-true" >
+              Solicitar pin temporal de recuperación de contraseña
+            </mat-radio-button>
+            <mat-radio-button [value]="false" data-imx-identifier="ConPinTemporal-false">
+              He recibido un pin temporal para el cambio de contraseña
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+        
+        <form [formGroup]="firstFormGroup" >  
+          <mat-form-field>
+            <mat-label>Usuario</mat-label>
+            <input matInput  formControlName="firstCtrl" placeholder="Login" required>
+          </mat-form-field>
+          </form>
+        </ng-container>
+        
+        
+        <div *ngIf="ConPinTemporal">hola</div>
+
+        <div>
+          <button mat-raised-button  matStepperNext color="primary">Siguiente</button>
+        </div>
+ 
+      </mat-step>
+
+      <mat-step >
+        <ng-template matStepLabel>Solicitud de envío de PIN para recuperación de contraseña</ng-template>
+
+        <!--Si tiene ping temporal-->
+        
+        <div *ngIf="ConPinTemporal">
+          <mat-form-field>
+            <mat-label>Recibir PIN en:</mat-label>
+            <input matInput  required>
+          </mat-form-field>
+        </div>
+
+        <div  *ngIf="!ConPinTemporal">
+          <mat-form-field>
+            <mat-label>Pin de acceso:</mat-label>
+            <input matInput  required>
+          </mat-form-field>
+          
+        <div class="captcha-container"></div>
+                 
+        <div>
+          <input placeholder="Introduzca los caracteres" type="text"
+            [(ngModel)]="captchaSvc.Response" [attr.data-imx-identifier]="'captcha-code'" [required]="true">
+            
+              <imx-captcha></imx-captcha><button mat-raised-button (click)="captchaSvc.ReinitCaptcha()">{{
+                '#LDS#Refresh image' | translate}}</button>	 
+         </div>
+        
+        </div>
 
 
-<mat-stepper linear #stepper>
-  <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">   
+
+        <br>
+        <br>
+        <div>
+          <button mat-raised-button  matStepperPrevious color="primary">Anterior</button>
+          <button mat-raised-button  matStepperNext color="primary">Siguiente</button>
+        </div>
+      </mat-step>
       
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>You are now done.</p>
+        <div>
+          <button mat-raised-button  matStepperPrevious>Back</button>
+          <button mat-raised-button  (click)="stepper.reset()">Reset</button>
+        </div>
+      </mat-step>
+  </mat-stepper>
+  </div>
+</mat-card>
+
+
+
+
+
+
+<!--<mat-stepper linear #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup" >  
+     
       <ng-template matStepLabel>Seleccione e introduzca nombre de usuario</ng-template>
       <div>
-        <mat-radio-group  color="primary" class="imx-type-radiogroup" data-imx-identifier="PinTemporal" [(ngModel)]="IsSelected" [ngModelOptions]="{standalone: true}" >
-        <mat-radio-button [value]="PinTemporalSi" data-imx-identifier="PinTemporal-false" checked="true">
+        <mat-radio-group color="primary" class="imx-type-radiogroup" data-imx-identifier="PinTemporal" [(ngModel)]="IsSelected"  [ngModelOptions]="{standalone: true}" >
+        <mat-radio-button [value]="PinTemporalSi" data-imx-identifier="PinTemporal-true" checked="true">
           Solicitar pin temporal de recuperación de contraseña
         </mat-radio-button>
-        <mat-radio-button [value]="PinTemporalNo" data-imx-identifier="PinTemporal-true" checked="false">
+        <mat-radio-button  [value]="PinTemporalNo" data-imx-identifier="PinTemporal-false" checked="false">
           He recibido un pin temporal para el cambio de contraseña
         </mat-radio-button>
         </mat-radio-group>
@@ -30,12 +121,23 @@
         <input matInput formControlName="firstCtrl" placeholder="Login" required>
       </mat-form-field>
 
+      <div *ngIf="IsSelected === 'true'">
+          <mat-label>hola</mat-label>
+      </div>
+      <div *ngIf="IsSelected === 'false'">
+        <mat-label>adios</mat-label>
+    </div>
+
+
       <div>
         <button mat-button matStepperNext color="primary">Siguiente</button>
       </div>
 
+      
+
     </form>
   </mat-step>
+
 
   <mat-step [stepControl]="secondFormGroup" >
     
@@ -49,7 +151,24 @@
         </ng-container>
 
       <ng-container *ngIf="IsSelected === 'false'">
-        <div>adios</div>
+        <mat-form-field>
+          <mat-label>Pin de acceso:</mat-label>
+          <input matInput formControlName="secondCtrl"  required>
+        </mat-form-field>
+        
+
+    <div class="captcha-container">
+        <imx-captcha></imx-captcha>
+
+        <input placeholder="{{'#LDS#Enter characters from the image' | translate}}" type="text"
+            [(ngModel)]="captchaSvc.Response" [attr.data-imx-identifier]="'captcha-code'" [required]="true">
+    </div>
+
+    <div class="buttonbar">
+        <button mat-raised-button (click)="captchaSvc.ReinitCaptcha()">{{
+            '#LDS#Refresh image' | translate}}</button>
+       
+    </div>
       </ng-container>
 
 
@@ -69,83 +188,16 @@
       <button mat-button (click)="stepper.reset()">Reset</button>
     </div>
   </mat-step>
-</mat-stepper>
-
-
-
-
-
-
-
-
-
-
-<!--
-<mat-card class="imx-selection-stepper">
-<ng-container>
-    <mat-radio-group class="imx-type-selector"  data-imx-identifier="PinTemporal" [(ngModel)]="PinTemporal" >
-      <mat-radio-button [value]="false" data-imx-identifier="PinTemporal-false" >
-        Solicitar pin temporal de recuperación de contraseña
-      </mat-radio-button>
-      <mat-radio-button [value]="true" data-imx-identifier="PinTemporal-true">
-        He recibido un pin temporal para el cambio de contraseña
-      </mat-radio-button>
-    </mat-radio-group>
-  </ng-container>
-  <br>
-  <div class="imx-stepper-content">
-   Nombre de usuario <input matInput type="text" autocomplete="no" />
-  </div>
-  <br>
-
-</mat-card>
-<div class="imx-step-button">
-  <button data-imx-identifier="imx-passwdchange-next" mat-stroked-button color="primary">
-    Siguiente
-  </button>
-</div>-->
-
-<!--<mat-stepper linear #stepper>
-  <mat-step label="Selecciona usuario" [stepControl]="firstFormGroup" [editable]="isEditable">
-  <form [formGroup]="firstFormGroup">  
-    <ng-template matStepLabel>Seleccione e introduzca nombre de usuario</ng-template>
-    <div>
-      <mat-radio-group  color="primary" class="imx-type-radiogroup" data-imx-identifier="PinTemporal" [(ngModel)]="PinTemporal" >
-        <mat-radio-button data-imx-identifier="PinTemporal-false" value="true" checked="true">
-          Solicitar pin temporal de recuperación de contraseña                 
-        </mat-radio-button>
-        <mat-radio-button data-imx-identifier="PinTemporal-true" value="false" chequed="false">
-          He recibido un pin temporal para el cambio de contraseña
-        </mat-radio-button>
-      </mat-radio-group>
-   </div>
-
-    <mat-form-field>
-      <mat-label>Usuario</mat-label>
-      <input matInput formControlName="firstCtrl" placeholder="Login" required>
-    </mat-form-field>
-
-    <div>
-      <button mat-button matStepperNext color="primary">Siguiente</button>
-    </div>
-  </form>
-  </mat-step>
-
-
-  <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
-    <mat-step label="Segundo paso"></mat-step>
-    <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Solicitud de envío de PIN para recuperación de contraseña</ng-template>
-      <mat-form-field>
-        <mat-label>Recibir PIN en:</mat-label>
-        <input matInput formControlName="secondCtrl"  required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Anterior</button>
-        <button mat-button matStepperNext>Siguiente</button>
-      </div>
-    </form>
-  </mat-step>
 </mat-stepper>-->
+
+
+
+
+
+
+
+
+
+
 
 </div>

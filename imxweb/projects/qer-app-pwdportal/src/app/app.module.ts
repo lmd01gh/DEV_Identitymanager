@@ -61,6 +61,8 @@ import appConfigJson from '../appconfig.json';
 import { PwdSqlWizardApiService } from './pwd-sql-wizard-api.service';
 import { CccpasswdchangeComponent } from './cccpasswdchange/cccpasswdchange.component';
 import { IdentitiesService } from 'qer';
+import { CaptchaModule } from 'qbm';
+
 
 export const HEADLESS_BASEHREF = '/headless';
 export function getBaseHref(): string {
@@ -70,6 +72,7 @@ export function getBaseHref(): string {
   declarations: [AppComponent,  CccpasswdchangeComponent],
   imports: [
     AppRoutingModule,
+    CaptchaModule,
     AuthenticationModule,
     BrowserAnimationsModule,
     BrowserModule,
@@ -136,6 +139,7 @@ export function getBaseHref(): string {
       provide: SqlWizardApiService,
       useClass: PwdSqlWizardApiService,
     },
+
   
   ],
   bootstrap: [AppComponent],

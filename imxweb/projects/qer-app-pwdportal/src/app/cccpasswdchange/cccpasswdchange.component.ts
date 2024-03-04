@@ -1,8 +1,8 @@
-import { Component, OnInit,  Inject } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA,  Inject } from '@angular/core';
 import { EuiLoadingService,  EuiSidesheetService  } from '@elemental-ui/core';
 import { IdentitySidesheetComponent } from 'qer';
 import {  SplashService } from 'qbm';
-import { BaseCdr, ColumnDependentReference, ConfirmationService, SnackBarService, CdrFactoryService } from 'qbm';
+import { CaptchaService, ColumnDependentReference, ConfirmationService, SnackBarService, CdrFactoryService } from 'qbm';
 import { IdentitiesService } from 'qer';
 import { PortalPersonReports, QerProjectConfig } from 'imx-api-qer';
 import {  UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
@@ -11,6 +11,8 @@ import { Subscription } from 'rxjs';
 import { EuiSidesheetRef, EUI_SIDESHEET_DATA } from '@elemental-ui/core';
 import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FormGroup } from '@angular/forms';
+
+
 
 
 @Component({
@@ -32,17 +34,22 @@ export class CccpasswdchangeComponent implements OnInit {
   });
   secondFormGroup = this._formBuilder.group({
     secondCtrl: ['', Validators.required],
+    thirdCtrl: ['', Validators.required],
+    fourCtrl: ['', Validators.required],
   });
+
   
   IsSelected = "true";
   PinTemporalSi = "true";
   PinTemporalNo ="false";
   
   PinTemporal: string;
+  ConPinTemporal=true;
   
-
+  public type: 'new' | 'existing' = 'new';
   
   radioOptions: FormGroup;
+  withSubordinates= true;
 
 
   constructor(
@@ -53,6 +60,7 @@ export class CccpasswdchangeComponent implements OnInit {
     
     private readonly sidesheetService: EuiSidesheetService,
     private readonly identityService: IdentitiesService,  
+    public readonly captchaSvc: CaptchaService,
     
     
     )
