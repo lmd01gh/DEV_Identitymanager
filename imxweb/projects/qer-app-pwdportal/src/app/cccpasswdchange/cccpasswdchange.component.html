@@ -1,3 +1,4 @@
+
 <div class="page">
     <imx-mast-head></imx-mast-head>
 <br> 
@@ -8,6 +9,13 @@
  
 </h1>
 
+
+
+  <eui-alert *ngIf="!resCodigo" type="error" [condensed]="true" [dismissable]="true">
+      <span translate>Código incorrecto.</span>
+  </eui-alert>
+
+
 <mat-card class="imx-delegation-stepper">
   <div>
     
@@ -16,11 +24,11 @@
        <ng-template matStepLabel>Seleccione e introduzca nombre de usuario</ng-template>
         <ng-container>
           <div>
-          <mat-radio-group  class="imx-type-radiogroup" color="primary"  [(ngModel)]="ConPinTemporal" data-imx-identifier="ConPinTemporal" >
-            <mat-radio-button [value]="true" data-imx-identifier="ConPinTemporal-true" >
+          <mat-radio-group  class="imx-type-radiogroup" color="primary"  [(ngModel)]="ConPinTemporal" data-imx-identifier="ConPinTemporal">
+            <mat-radio-button [value]="false" data-imx-identifier="ConPinTemporal-false" >
               Solicitar pin temporal de recuperación de contraseña
             </mat-radio-button>
-            <mat-radio-button [value]="false" data-imx-identifier="ConPinTemporal-false">
+            <mat-radio-button [value]="true" data-imx-identifier="ConPinTemporal-true">
               He recibido un pin temporal para el cambio de contraseña
             </mat-radio-button>
           </mat-radio-group>
@@ -38,59 +46,83 @@
         <div *ngIf="ConPinTemporal">hola</div>
 
         <div>
-          <button mat-raised-button  matStepperNext color="primary">Siguiente</button>
+          <button mat-raised-button *ngIf="firstFormGroup" matStepperNext color="primary">Siguiente</button>
         </div>
  
       </mat-step>
 
-      <mat-step >
+      <mat-step  [stepControl]="secondFormGroup">
+
+        <div *ngIf="ConPinTemporal">ConPpin</div>
         <ng-template matStepLabel>Solicitud de envío de PIN para recuperación de contraseña</ng-template>
 
-        <!--Si tiene ping temporal-->
+        <!--Si no tiene ping temporal-->
         
-        <div *ngIf="ConPinTemporal">
+        
+        
+          <mat-form-field>
+         <mat-label *ngIf="!ConPinTemporal">Recibir PIN en:</mat-label>
+         <mat-label *ngIf="ConPinTemporal">Pin de acceso:</mat-label> 
+          <form [formGroup]="secondFormGroup" >  
+          <input matInput  formControlName="secondCtrl" [required]="true">
+          </form>
+          </mat-form-field> 
+        
+
+        
+        <!--<div *ngIf="!ConPinTemporal">
           <mat-form-field>
             <mat-label>Recibir PIN en:</mat-label>
-            <input matInput  required>
-          </mat-form-field>
+            <form [formGroup]="secondFormGroup" >  
+              <input matInput  formControlName="secondCtrl" required>
+            </form>
+            </mat-form-field> 
         </div>
+      
 
-        <div  *ngIf="!ConPinTemporal">
+        <div  *ngIf="ConPinTemporal">
           <mat-form-field>
             <mat-label>Pin de acceso:</mat-label>
-            <input matInput  required>
-          </mat-form-field>
-          
-        <div class="captcha-container"></div>
-                 
-        <div>
-          <input placeholder="Introduzca los caracteres" type="text"
-            [(ngModel)]="captchaSvc.Response" [attr.data-imx-identifier]="'captcha-code'" [required]="true">
-            
-              <imx-captcha></imx-captcha><button mat-raised-button (click)="captchaSvc.ReinitCaptcha()">{{
-                '#LDS#Refresh image' | translate}}</button>	 
-         </div>
+            <input matInput  >
+          </mat-form-field> -->
         
+        <div  *ngIf="ConPinTemporal">
+          <div class="captcha-container"></div>
+          <div>
+            <form [formGroup]="secondFormGroup" > 
+            <input placeholder="Introduzca los caracteres" formControlName="thirdCtrl" type="text"
+              [(ngModel)]="captchaSvc.Response" [attr.data-imx-identifier]="'captcha-code'" [required]="true" (change)="CompruebaCaptcha()"  >
+              
+            </form>
+                <imx-captcha></imx-captcha><button mat-raised-button (click)="captchaSvc.ReinitCaptcha()">{{
+                  '#LDS#Refresh image' | translate}}</button>	 
+          </div>
         </div>
-
-
-
+      
         <br>
         <br>
+        
+              
+
         <div>
-          <button mat-raised-button  matStepperPrevious color="primary">Anterior</button>
-          <button mat-raised-button  matStepperNext color="primary">Siguiente</button>
+          <!--Solicito un pin Temporal-->
+          <div *ngIf="!ConPinTemporal"> 
+           <button mat-raised-button   matStepperPrevious color="primary">Anterior</button>
+          <button mat-raised-button  color="primary" (click)="EnviarPin()">Enviar Pin</button>
+          </div>
+
+            <div *ngIf="ConPinTemporal">
+            <button mat-raised-button   matStepperPrevious color="primary">Anterior</button>
+            <button mat-raised-button [disabled]="secondFormGroup.invalid" matStepperNext  (click)="EnviarPin()" color="primary">Aceptar</button>
+             </div>
+             
+         
+         
+         
         </div>
       </mat-step>
       
-      <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        <p>You are now done.</p>
-        <div>
-          <button mat-raised-button  matStepperPrevious>Back</button>
-          <button mat-raised-button  (click)="stepper.reset()">Reset</button>
-        </div>
-      </mat-step>
+     
   </mat-stepper>
   </div>
 </mat-card>
