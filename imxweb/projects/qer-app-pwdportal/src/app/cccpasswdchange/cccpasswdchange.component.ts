@@ -39,7 +39,6 @@ export class CccpasswdchangeComponent implements OnInit {
   });
   secondFormGroup = this._formBuilder.group({
     secondCtrl: ['', Validators.required],
-    thirdCtrl: ['', Validators.required],
   });
 
 
@@ -51,11 +50,9 @@ export class CccpasswdchangeComponent implements OnInit {
   
   PinTemporal: string;
   ConPinTemporal=false;
+  Login="";
+ 
   
-  public type: 'new' | 'existing' = 'new';
-  
-  radioOptions: FormGroup;
-  withSubordinates= true;
   userName="";
   resCodigo=true;
 
@@ -64,10 +61,6 @@ export class CccpasswdchangeComponent implements OnInit {
    // private readonly sidesheetRef: EuiSidesheetRef,
     private _formBuilder: FormBuilder,
     private readonly splash: SplashService,
-    private readonly cdrFactoryService: CdrFactoryService,
-    
-    private readonly sidesheetService: EuiSidesheetService,
-    private readonly identityService: IdentitiesService,  
     public readonly captchaSvc: CaptchaService,
     private readonly qerApiService: QerApiService,
     
@@ -113,13 +106,13 @@ EnviarPin() : void{
       AccountName: this.userName,
       Code: resp
     });
-    console.log ("respuesta " + resp)
+  //  console.log ("respuesta " + resp)
     this.captchaSvc.Response=resp;
     this.resCodigo=true;
   } catch (e) {
     this.resCodigo=false;
     this.captchaSvc.ReinitCaptcha();
-    console.log ("respuesta incorrecta " + e)
+    //console.log ("respuesta incorrecta " + e)
     throw e;
   }finally {
     
@@ -127,5 +120,14 @@ EnviarPin() : void{
   
 
 }
+
+ModificaOpcionSeleccionada() : void{
+  //console.log (this.ConPinTemporal);
+
+}
+public onCodigoDismissed(): void {
+  this.resCodigo = true;
+}
+
 }
 
