@@ -14,13 +14,23 @@
   <eui-alert *ngIf="!resCodigo" type="error" [condensed]="true" [dismissable]="true"  (dismissed)="onCodigoDismissed()">
       <span translate>Código incorrecto.</span>
   </eui-alert>
+  
+  <eui-alert *ngIf="errorSolicitud"[condensed]="true" [colored]="true" type="error"  [dismissable]="true"  (dismissed)="onCodigoDismissed()" >
+    <span translate>No se puede encontrar una combinación de cuenta y datos de recuperación aportados. </span>
+    <span translate>Por favor, verifique su perfil. Puede contactar con nosotros a través del telefóno de asistencia. Gracias</span>
+  </eui-alert>
+
+  <eui-alert *ngIf="alertPin"[condensed]="true" [colored]="true" type="info"  [dismissable]="true" (dismissed)="onCodigoCorrecto()">
+    <!--<eui-alert *ngIf="alertPin"[condensed]="true" [colored]="true" type="info"  [dismissable]="true" (dismissed)="stepper.reset()">-->
+    <span translate>En unos momentos recibirá un PIN para el reinicio de contraseña. Revise su cuenta o dispositivo </span>
+  </eui-alert>
 
 
 <mat-card class="imx-delegation-stepper">
   <div>
     
     <mat-stepper linear #stepper >
-      <mat-step  [stepControl]="firstFormGroup">
+      <mat-step  [stepControl]="firstFormGroup"  [editable]="!errorSolicitud && !alertPin">
        <ng-template matStepLabel>Seleccione e introduzca nombre de usuario</ng-template>
         <ng-container>
           <div>
@@ -79,7 +89,7 @@
         <br>
           <mat-form-field>
             <mat-label>Recibir PIN en:</mat-label>
-              <input matInput  data-imx-identifier="Pin">
+              <input matInput  data-imx-identifier="Pin" [(ngModel)]="Pin">
             </mat-form-field> 
         </div>
       
@@ -112,8 +122,8 @@
         <div>
           <!--Solicito un pin Temporal-->
           <div *ngIf="!ConPinTemporal"> 
-           <button mat-raised-button   matStepperPrevious color="primary">Anterior</button>
-          <button mat-raised-button  color="primary" (click)="EnviarPin()">Enviar Pin</button>
+           <button mat-raised-button   matStepperPrevious  *ngIf="!alertPin && !errorSolicitud" (click)="onCodigoDismissed()"  color="primary">Anterior</button>
+          <button mat-raised-button   *ngIf="!alertPin && !errorSolicitud" color="primary" (click)="EnviarPin()">Enviar Pin</button>
           </div>
           
             <!--Tiene Pin Temporal -->

@@ -36,9 +36,8 @@ const routes: Routes = [
   {
     path: '',
     component: CccpasswdchangeComponent,
-    //resolve: [RouteGuardService]
-    //canActivate: [RouteGuardService]
-    /*resolve: [RouteGuardService]*/
+    //canActivate: [RouteGuardService],
+    resolve: [RouteGuardService]
   },
   {
     path: 'dashboard',

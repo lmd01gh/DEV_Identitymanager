@@ -1,19 +1,20 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA,  Inject } from '@angular/core';
-import { EuiLoadingService,  EuiSidesheetService  } from '@elemental-ui/core';
-import { IdentitySidesheetComponent } from 'qer';
+import { Component, OnInit,ViewChild, CUSTOM_ELEMENTS_SCHEMA,  Inject } from '@angular/core';
 import {  SplashService } from 'qbm';
-import { CaptchaService, ColumnDependentReference, ConfirmationService, SnackBarService, CdrFactoryService } from 'qbm';
-import { IdentitiesService } from 'qer';
-import { PortalPersonReports, QerProjectConfig } from 'imx-api-qer';
+import { CaptchaService, ColumnDependentReference,AppConfigService, ConfirmationService, SnackBarService, CdrFactoryService } from 'qbm';
+
 import {  UntypedFormGroup, UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+
 import { Subscription } from 'rxjs';
-import { EuiSidesheetRef, EUI_SIDESHEET_DATA } from '@elemental-ui/core';
-import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { FormGroup } from '@angular/forms';
+
+import {FormBuilder, Validators} from '@angular/forms';
+
 import { QerApiService } from "qer";
-import { throwDialogContentAlreadyAttachedError } from '@angular/cdk/dialog';
-import { MatRadioChange } from '@angular/material/radio';
+import { V2Client} from 'imx-api-ccc';
+
+import { Router , RouterLink} from '@angular/router';
+import { MatStepper } from '@angular/material/stepper';
+
+
 
 
 
@@ -27,6 +28,8 @@ export class CccpasswdchangeComponent implements OnInit {
   
   public readonly profileForm: UntypedFormGroup;
   public readonly formGroup: UntypedFormGroup;
+  public  _v2Client: V2Client;
+  @ViewChild('stepper') public stepper: MatStepper;
   
   public cdrList: ColumnDependentReference[] = [];
   public accountIsOff = 0;
@@ -51,10 +54,19 @@ export class CccpasswdchangeComponent implements OnInit {
   PinTemporal: string;
   ConPinTemporal=false;
   Login="";
+  Pin="";
  
   
   userName="";
   resCodigo=true;
+  errorSolicitud=false;
+  alertPin=false;
+  respuesta: string;
+  ruta: string;
+  
+
+  
+  
 
 
   constructor(
@@ -63,8 +75,11 @@ export class CccpasswdchangeComponent implements OnInit {
     private readonly splash: SplashService,
     public readonly captchaSvc: CaptchaService,
     private readonly qerApiService: QerApiService,
+    private readonly config: AppConfigService,
+    private readonly router: Router,
+ 
     
-    
+  
     )
     {
      // this.profileForm = new UntypedFormGroup({ formArray: formBuilder.array([]) });
@@ -72,7 +87,9 @@ export class CccpasswdchangeComponent implements OnInit {
       this.formGroup = new UntypedFormGroup({
         answer: new UntypedFormControl('', { updateOn: 'blur', validators: [Validators.required] }),
         
+      
       });
+     
       
     }
     
@@ -80,7 +97,9 @@ export class CccpasswdchangeComponent implements OnInit {
 
   ngOnInit(): void {
    // console.log("llego")
-    this.splash.close()
+   const schemaProvider = this.config.client;
+   this._v2Client = new V2Client(this.config.apiClient,schemaProvider);
+  this.splash.close()
   
   }
   
@@ -88,8 +107,28 @@ export class CccpasswdchangeComponent implements OnInit {
 private setup(): void {
 }
 
-EnviarPin() : void{
-  console.log("entro en opcion Seleccionada")
+public async EnviarPin() {
+  console.log("entro en opcion Seleccionada");
+  
+  console.log(this.Login);
+  console.log(this.Pin);
+  //this.respuesta = this.v2Client.Customeprinsa_CCC_SolicitudOTP_get();
+  
+ //let respuesta2= await this._v2Client.Customeprinsa_CCC_SolicitudOTP_get({OTP_Usuario:"lmd01",OTP_EnviarA:"lala"})
+ let respuesta2= await this._v2Client.Customeprinsa_CCC_SolicitudOTP_get({OTP_Usuario:this.Login ,OTP_EnviarA:this.Pin})
+  //return "1"
+  console.log(respuesta2);
+  if (respuesta2 == "-1") 
+  {
+    this.errorSolicitud=true;
+    this.alertPin=false;
+  }
+  else{
+    this.errorSolicitud=false;
+    this.alertPin=true;
+  }
+//  console.log ("la respuesta es: " + this.respuesta)
+//console.log ("despues de llamar al método ")
 
 }
 
@@ -125,8 +164,26 @@ ModificaOpcionSeleccionada() : void{
   //console.log (this.ConPinTemporal);
 
 }
+
+public LimpiarVariables():void
+{
+  this.resCodigo = true;
+  this.errorSolicitud=false;
+  this.alertPin=false;
+}
 public onCodigoDismissed(): void {
   this.resCodigo = true;
+  this.errorSolicitud=false;
+  this.alertPin=false;
+  //console.log("limpio variables de control");
+
+}
+
+public onCodigoCorrecto():void {
+  this.LimpiarVariables();
+  this.Login="";
+  this.Pin="";
+  this.stepper.reset();
 }
 
 }

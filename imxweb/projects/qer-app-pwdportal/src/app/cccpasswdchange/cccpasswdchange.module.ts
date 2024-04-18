@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CccpasswdchangeComponent } from './cccpasswdchange.component';
+import { AppRoutingModule } from './../app-routing.module';
 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,6 +25,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatRadioModule,
     MatListModule,
     MatFormFieldModule,
+    AppRoutingModule
   ]
 })
 

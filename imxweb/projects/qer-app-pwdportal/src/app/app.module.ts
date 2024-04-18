@@ -64,6 +64,7 @@ import { IdentitiesService } from 'qer';
 import { CaptchaModule } from 'qbm';
 
 
+
 export const HEADLESS_BASEHREF = '/headless';
 export function getBaseHref(): string {
   return location.href.includes('headless') ? HEADLESS_BASEHREF : '';
@@ -139,7 +140,7 @@ export function getBaseHref(): string {
       provide: SqlWizardApiService,
       useClass: PwdSqlWizardApiService,
     },
-
+  
   
   ],
   bootstrap: [AppComponent],
