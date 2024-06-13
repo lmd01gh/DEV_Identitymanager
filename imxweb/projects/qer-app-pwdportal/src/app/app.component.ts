@@ -36,6 +36,8 @@ import { ProfileSettings } from 'imx-api-qer';
 import { getBaseHref, HEADLESS_BASEHREF } from './app.module';
 import { TranslateService } from '@ngx-translate/core';
 
+
+
 @Component({
   selector: 'imx-root',
   styleUrls: ['./app.component.scss'],
@@ -47,6 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public showPageContent = true;
 
   private readonly subscriptions: Subscription[] = [];
+  
 
   constructor(
     private readonly authentication: AuthenticationService,
@@ -60,6 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly translationProvider: ImxTranslationProviderService,
     private readonly translateService: TranslateService
   ) {
+    
     this.subscriptions.push(
       this.authentication.onSessionResponse.subscribe(async (sessionState: ISessionState) => {
         if (sessionState.hasErrorState) {
@@ -84,6 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
           // Close the splash screen that opened in app service initialisation
           // Needs to close here when running in containers (auth skipped)
+          
           this.splash.close();
           this.applyProfileSettings();
         }

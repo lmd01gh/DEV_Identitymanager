@@ -36,7 +36,8 @@ const routes: Routes = [
   {
     path: '',
     component: CccpasswdchangeComponent,
-    //canActivate: [RouteGuardService],
+   //component: LoginComponent,
+   //canActivate: [AuthenticationGuardService],
     resolve: [RouteGuardService]
   },
   {
@@ -70,6 +71,7 @@ const routes: Routes = [
         const externalUrl = route.paramMap.get('externalUrl');
         if (externalUrl && externalUrl.toLocaleLowerCase() !== 'undefined') {
           window.open(externalUrl, '_self');
+          
         }
       }
     },

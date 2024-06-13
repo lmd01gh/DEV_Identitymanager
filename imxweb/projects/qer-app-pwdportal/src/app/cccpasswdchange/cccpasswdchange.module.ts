@@ -25,7 +25,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatRadioModule,
     MatListModule,
     MatFormFieldModule,
-    AppRoutingModule
+    AppRoutingModule,
   ]
 })
 

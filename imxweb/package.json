@@ -96,7 +96,7 @@
     "karma-viewport": "^1.0.4",
     "ng-mocks": "^14.5.2",
     "ng-packagr": "^14.2.2",
-    "protractor": "^7.0.0",
+    "protractor": "^3.3.0",
     "terser": "^5.15.1",
     "ts-node": "~7.0.0",
     "tslint": "~6.1.0",

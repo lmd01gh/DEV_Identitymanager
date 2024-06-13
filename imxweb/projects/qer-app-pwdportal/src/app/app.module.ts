@@ -36,6 +36,7 @@ import { EuiCoreModule, EuiMaterialModule } from '@elemental-ui/core';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
 import { APP_BASE_HREF } from '@angular/common';
 import {
   AuthenticationModule,
@@ -62,6 +63,8 @@ import { PwdSqlWizardApiService } from './pwd-sql-wizard-api.service';
 import { CccpasswdchangeComponent } from './cccpasswdchange/cccpasswdchange.component';
 import { IdentitiesService } from 'qer';
 import { CaptchaModule } from 'qbm';
+import { cccvisorpaswdComponent } from './cccpasswdchange/cccvisorpaswd.component';
+
 
 
 
@@ -70,7 +73,7 @@ export function getBaseHref(): string {
   return location.href.includes('headless') ? HEADLESS_BASEHREF : '';
 }
 @NgModule({
-  declarations: [AppComponent,  CccpasswdchangeComponent],
+  declarations: [AppComponent,  CccpasswdchangeComponent,cccvisorpaswdComponent],
   imports: [
     AppRoutingModule,
     CaptchaModule,
@@ -95,6 +98,7 @@ export function getBaseHref(): string {
     CdkStepperModule,
     MatProgressBarModule,
     MatStepperModule,
+    MatDialogModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -145,7 +149,7 @@ export function getBaseHref(): string {
   ],
   bootstrap: [AppComponent],
   exports: [
-    CccpasswdchangeComponent
+    CccpasswdchangeComponent,
   ],
 })
 export class AppModule {}

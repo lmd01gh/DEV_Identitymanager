@@ -313,6 +313,7 @@
           "options": {
             "tsConfig": "projects/cpl/tsconfig.lib.json",
             "project": "projects/cpl/ng-package.json"
+            
           },
           "configurations": {
             "production": {

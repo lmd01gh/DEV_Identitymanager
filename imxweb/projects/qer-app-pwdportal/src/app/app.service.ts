@@ -86,6 +86,7 @@ export class AppService {
     this.session.TypedClient = new TypedClient(this.config.v2client, this.translationProvider);
     SystemJS.set('qbm', SystemJS.newModule(QBM));
     SystemJS.set('qer', SystemJS.newModule(QER));
+    
 
     await this.pluginLoader.loadModules(environment.appName);
   }
@@ -98,6 +99,7 @@ export class AppService {
     this.title.setTitle(title);
 
     await this.updateSplash(title);
+ 
   }
 
   public static init(app: AppService): () => Promise<any> {
@@ -110,7 +112,8 @@ export class AppService {
 
   private showSplash(): void {
     // open splash screen with fix values
-    this.splash.init({ applicationName: 'Password Reset Portal' });
+    this.splash.init({ applicationName: 'Password Reset Portal1' });
+    
   }
 
   private async updateSplash(title: string): Promise<void> {
