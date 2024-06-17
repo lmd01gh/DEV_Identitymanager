@@ -84,3 +84,7 @@ color: primary;
   //margin: 1em 0;
   margin: 15px 0; 
 }
+
+::ng-deep  .mat-step-header {
+  pointer-events: none !important;
+}

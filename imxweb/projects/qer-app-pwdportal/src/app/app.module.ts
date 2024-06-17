@@ -64,6 +64,7 @@ import { CccpasswdchangeComponent } from './cccpasswdchange/cccpasswdchange.comp
 import { IdentitiesService } from 'qer';
 import { CaptchaModule } from 'qbm';
 import { cccvisorpaswdComponent } from './cccpasswdchange/cccvisorpaswd.component';
+import { cccvisorpasswdokComponent } from './cccpasswdchange/cccvisorpasswd-ok.component';
 
 
 
@@ -73,7 +74,7 @@ export function getBaseHref(): string {
   return location.href.includes('headless') ? HEADLESS_BASEHREF : '';
 }
 @NgModule({
-  declarations: [AppComponent,  CccpasswdchangeComponent,cccvisorpaswdComponent],
+  declarations: [AppComponent,  CccpasswdchangeComponent,cccvisorpaswdComponent,cccvisorpasswdokComponent],
   imports: [
     AppRoutingModule,
     CaptchaModule,

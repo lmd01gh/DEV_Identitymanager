@@ -21,7 +21,6 @@
   </eui-alert>
 
   <eui-alert *ngIf="alertPin"[condensed]="true" [colored]="true" type="info"  [dismissable]="true" (dismissed)="onCodigoCorrectoDismissed()">
-    <!--<eui-alert *ngIf="alertPin"[condensed]="true" [colored]="true" type="info"  [dismissable]="true" (dismissed)="stepper.reset()">-->
     <span translate>En unos momentos recibirá un PIN para el reinicio de contraseña. Revise su cuenta o dispositivo </span>
   </eui-alert>
   
@@ -29,13 +28,21 @@
     <!--<eui-alert *ngIf="alertPin"[condensed]="true" [colored]="true" type="info"  [dismissable]="true" (dismissed)="stepper.reset()">-->
     <span translate>ERROR: El código introducido no es correcto. </span>
   </eui-alert>
+  <eui-alert *ngIf="errorPasswd"[condensed]="true" [colored]="true" type="error"  [dismissable]="true" (dismissed)="LimpiarErrorPaswd()" >
+    <span translate>Las contraseñas no coinciden</span>
+  </eui-alert>
+  <eui-alert *ngIf="errorCheckPasswd"[condensed]="true" [colored]="true" type="error"  [dismissable]="true" (dismissed)="LimpiarErrorPaswd()" >
+    <span translate>La contraseña no cumple con los requisitos necesarios. Pulse el botón "Requisitos de Contraseña" para más información.</span>
+  </eui-alert>
 
 
   <mat-card class="imx-delegation-stepper">
     <div>
     
       <mat-stepper linear #stepper >
-        <mat-step  [stepControl]="firstFormGroup"  [editable]="!errorSolicitud && !alertPin">
+        <!--<mat-step  [stepControl]="firstFormGroup"  [editable]="!errorSolicitud && !alertPin" clas="mat-step-header">-->
+        <mat-step class="mat-step-header">
+
           <ng-template matStepLabel>Seleccione e introduzca nombre de usuario</ng-template>
             <ng-container>
               <div>
@@ -66,7 +73,8 @@
  
         </mat-step>
 
-        <mat-step  [stepControl]="secondFormGroup" >
+        <!--<mat-step  [stepControl]="secondFormGroup">-->
+          <mat-step class="mat-step-header">
             <ng-template matStepLabel>Solicitud de recuperacion de contraseña con PIN para la cuenta 
               <input class="form-control-lg border-0" [(ngModel)]="Login">
             </ng-template>
@@ -127,28 +135,35 @@
       
 <!--3 paso -->
    
-      <mat-step [stepControl]="ThirdFormGroup" >
+      <!--<mat-step [stepControl]="ThirdFormGroup">-->
+        <mat-step class="mat-step-header">
         <ng-template matStepLabel>Establecer Nueva Contraseña</ng-template>
       
           <div *ngIf="tercerPaso">
           <!--  Establezca una nueva contraseña. Le recordamos que los cambios pueden tardar hasta un minuto en ser efectivos.-->
+          <button mat-raised-button  (click)="RequisitosPasswd()" color="primary">Requisitos de Contraseña </button>
+          <div></div>
+          <br>
+          <div></div>
           <form [formGroup]="ThirdFormGroup" >       
             <div>
 
               <mat-form-field  [style.width.px]=350>
                   <mat-label>Nueva contraseña:</mat-label>
-                    <input matInput  formControlName="ThirdFormCtrl" data-imx-identifier="NuevaPasswd"  [(ngModel)]="NuevaPasswd" type="password">
+                    <input matInput  formControlName="ThirdFormCtrl" data-imx-identifier="NuevaPasswd" value="" [(ngModel)]="NuevaPasswd" (input)="LimpiarErrorPaswd()" type="password">
                 </mat-form-field> 
             </div>
             <div>
                 <mat-form-field  [style.width.px]=350>
                   <mat-label>Repetir la contraseña:</mat-label>
-                    <input matInput formControlName="FourFormCtrl" data-imx-identifier="RepetirPasswd" [(ngModel)]="RepetirPasswd" type="password">
+                    <input matInput formControlName="FourFormCtrl" data-imx-identifier="RepetirPasswd" [(ngModel)]="RepetirPasswd" (input)="LimpiarErrorPaswd()" type="password">
                   </mat-form-field> 
             </div>
-            <button mat-raised-button  (click)="RequisitosPasswd()" color="primary">Requisitos de Contraseña" </button>
+            
             <button mat-raised-button [disabled]="ThirdFormGroup.invalid" (click)="CambiarPasswd()" color="primary">Aceptar</button>
+            
           </form>
+          
           </div>
       </mat-step>
       

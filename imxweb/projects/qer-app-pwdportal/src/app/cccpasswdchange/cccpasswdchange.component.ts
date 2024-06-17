@@ -2,9 +2,7 @@ import { Component, OnInit,ViewChild, CUSTOM_ELEMENTS_SCHEMA,  Inject } from '@a
 import {  SplashService, SystemInfoService } from 'qbm';
 import { CaptchaService, ColumnDependentReference,AppConfigService } from 'qbm';
 
-import {  UntypedFormGroup, UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
-
-import { Subscription } from 'rxjs';
+import {  UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 
 import {FormBuilder, Validators} from '@angular/forms';
 import { OverlayRef } from '@angular/cdk/overlay';
@@ -12,10 +10,14 @@ import { OverlayRef } from '@angular/cdk/overlay';
 import { V2Client} from 'imx-api-ccc';
 import { MatStepper } from '@angular/material/stepper';
 import {cccvisorpaswdComponent} from "./cccvisorpaswd.component";
+import {cccvisorpasswdokComponent} from "./cccvisorpasswd-ok.component";
 
 import {  AuthenticationService, imx_SessionService, UserMessageService } from 'qbm';
 import { EuiLoadingService } from "@elemental-ui/core";
 import { MatDialog } from '@angular/material/dialog';
+import { PolicyValidationResult } from 'imx-api-qer';
+
+import { PasswordService } from '../../../../qer/src/lib/password/password.service';
 
 
 
@@ -64,6 +66,7 @@ export class CccpasswdchangeComponent implements OnInit {
  
   
   userName="";
+  UIDPerson="";
   
   resCodigo=true;
   errorSolicitud=false;
@@ -71,6 +74,8 @@ export class CccpasswdchangeComponent implements OnInit {
   respuesta: string;
   ruta: string;
   errorPascode=false;
+  errorPasswd=false;
+  errorCheckPasswd=false;
   
   
   
@@ -87,7 +92,9 @@ export class CccpasswdchangeComponent implements OnInit {
 		private readonly session: imx_SessionService,
 		private readonly busyService: EuiLoadingService,
 		private readonly messageSvc: UserMessageService, 
-    private dialogService: MatDialog,
+    private passwordSvc: PasswordService,
+    private dialogService:MatDialog,
+
     )
 
     {
@@ -176,6 +183,7 @@ public async EnviarPin() {
             setTimeout(() => this.busyService.hide(overlayRef));
             this.errorPascode=false;
             this.tercerPaso=true;
+            this.UIDPerson=newSession.UserUid;
             
              //console.log(newSession.IsLoggedIn);
             //console.log(newSession.UserUid);
@@ -217,12 +225,58 @@ public async EnviarPin() {
 
     async CambiarPasswd()
     {
+      this.errorPasswd=false;
+      this.errorCheckPasswd=false;
       if (this.NuevaPasswd != this.RepetirPasswd)
         {
-          console.log ("Error. Password distintas");
+          this.errorPasswd=true;
+        }
+      else{
+        const resp4=await this._v3Client.Customeprinsa_PoliticaPassword_columnas_get({})  
+        const Longitud=(resp4.Entities[0].Columns.MinLen.Value);
+        if ((this.NuevaPasswd.length)< Longitud) 
+          {
+          this.errorCheckPasswd=true;
+          }
+        else{
+          //Grabo la nueva password
+            let overlayRef: OverlayRef;
+            setTimeout(() => overlayRef = this.busyService.show());
+        
+            let results: PolicyValidationResult[];
+            try {
+              results = await this.passwordSvc.postOrCheckPassword({
+                NewPassword: this.NuevaPasswd,
+                CheckOnly: false,
+                Ids: ["<Key><T>Person</T><P>" + this.UIDPerson + "</P></Key>.CentralPassword"]
+              }, "");
+            } finally {
+              setTimeout(() => this.busyService.hide(overlayRef));
+            }
+        
+            if (results.length === 0) 
+              {
+              this.NuevaPasswd="";
+              this.RepetirPasswd="";
+              this.ThirdFormGroup.invalid;
+              this.dialogService.open(cccvisorpasswdokComponent, {
+                data: {Login: this.Login,
+                },
+                panelClass: 'imx-messageDialog',
+                disableClose: true
+            });
+              } 
+            else {
+              this.errorCheckPasswd=true;
+            }
+          }
+          }
+
         }
 
-    }
+
+       // if len(variable)<resp4.Entities[0].Columns.MinLen.Value)
+  
     
 
 ModificaOpcionSeleccionada() : void{
@@ -239,6 +293,14 @@ public LimpiarVariables():void
   this.tercerPaso=false;
   
 }
+
+public LimpiarErrorPaswd():void
+{
+  this.errorPasswd=false;  
+  this.errorCheckPasswd=false;
+}
+
+
 public onCodigoErrorDismissed(): void {
   this.resCodigo = true;
   //ErrorSolicitud Se usa para comprobar que cuando solicite un pin me haya generado uno y me lo haya enviado correctamente
@@ -249,14 +311,12 @@ public onCodigoErrorDismissed(): void {
   this.errorPascode=false;
   //tercerPaso. Se usa para pasar o no a la tercera pestaña del stepper
   this.tercerPaso=false;
-  
-  //console.log("limpio variables de control");
-
+  //error.passwd. Se usa para mostrar el error si las contraseñas no coinciden.
 }
 
 public onCodigoCorrectoDismissed():void {
   this.LimpiarVariables();
-  this.Login="";
+  //this.Login="";
   this.Pin="";
   this.stepper.reset();
 }
@@ -264,7 +324,6 @@ public onCodigoCorrectoDismissed():void {
 public ReinciciarCaptcha():void{
 this.captchaSvc.ReinitCaptcha();
 }
-
 
 
 async  RequisitosPasswd()
@@ -283,6 +342,12 @@ async  RequisitosPasswd()
   
   }
 
- 
+  onStepChange(event: any): void {
+    //use event.selectedIndex to know which step your user in.
+    console.log("Estoy en la pestaña " + event.selectedIndex);
+    
+}
+
+
 }
 
