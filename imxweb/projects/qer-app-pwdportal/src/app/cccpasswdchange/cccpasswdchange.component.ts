@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild, CUSTOM_ELEMENTS_SCHEMA,  Inject } from '@angular/core';
-import {  SplashService, SystemInfoService } from 'qbm';
-import { CaptchaService, ColumnDependentReference,AppConfigService } from 'qbm';
+import {  SplashService  } from 'qbm';
+import { CaptchaService, AppConfigService } from 'qbm';
 
 import {  UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 
@@ -12,7 +12,7 @@ import { MatStepper } from '@angular/material/stepper';
 import {cccvisorpaswdComponent} from "./cccvisorpaswd.component";
 import {cccvisorpasswdokComponent} from "./cccvisorpasswd-ok.component";
 
-import {  AuthenticationService, imx_SessionService, UserMessageService } from 'qbm';
+import {  imx_SessionService, UserMessageService } from 'qbm';
 import { EuiLoadingService } from "@elemental-ui/core";
 import { MatDialog } from '@angular/material/dialog';
 import { PolicyValidationResult } from 'imx-api-qer';
@@ -50,13 +50,13 @@ export class CccpasswdchangeComponent implements OnInit {
   });
  
   
-  IsSelected = "true";
-  PinTemporalSi = "true";
-  PinTemporalNo ="false";
-  editable="false";
+  
+  
+  
   
   PinTemporal: string;
   ConPinTemporal=false;
+  UIDPerson="";
   Login="";
   Pin="";
   PinAcceso="";
@@ -64,20 +64,23 @@ export class CccpasswdchangeComponent implements OnInit {
   RepetirPasswd="";
   tercerPaso=false;
  
+
   
-  userName="";
-  UIDPerson="";
-  
+  //Se utiliza para la comprobación del captcha
   resCodigo=true;
-  errorSolicitud=false;
+
+  public errorSolicitud=false;
   alertPin=false;
-  respuesta: string;
-  ruta: string;
   errorPascode=false;
   errorPasswd=false;
   errorCheckPasswd=false;
   
-  
+//PinTemporalSi = "true";
+  //PinTemporalNo ="false";
+  //ruta: string;
+  //respuesta: string;
+  //userName="";
+  //editable="false";
   
 
   
@@ -124,23 +127,39 @@ private setup(): void {
 public async EnviarPin() {
   //console.log("entro en opcion Seleccionada");
   
-  console.log(this.Login);
-  console.log(this.Pin);
+  //console.log(this.Login);
+  //console.log(this.Pin);
   
   
  let respuesta2= await this._v3Client.Customeprinsa_CCC_SolicitudOTP_get({OTP_Usuario:this.Login ,OTP_EnviarA:this.Pin})
  
  
- 
-  console.log(respuesta2);
+  //console.log(respuesta2);
   if (respuesta2 == "-1") 
   {
     this.errorSolicitud=true;
+    //Error no me envia el pin por error en los datos. lamo a la pantalla modal para mostrar error
+    this.dialogService.open(cccvisorpasswdokComponent, {
+      data: {Login: "No se puede encontrar una combinación de cuenta y datos de recuperación aportados.",
+         TipoError: 'EnvioDatos'
+      },
+      panelClass: 'imx-messageDialog',
+      disableClose: true
+  });
+
     this.alertPin=false;
   }
   else{
-    this.errorSolicitud=false;
-    this.alertPin=true;
+   
+  //this.alertPin=true;
+    this.onCodigoCorrectoDismissed();
+    this.dialogService.open(cccvisorpasswdokComponent, {
+      data: {Login: "En unos momentos recibirá un PIN para el reinicio de contraseña. Revise su cuenta o dispositivo.",
+         TipoError: 'EnvioDatosOK'
+      },
+      panelClass: 'imx-messageDialog',
+      disableClose: true
+  });
   }
 
 
@@ -256,15 +275,19 @@ public async EnviarPin() {
         
             if (results.length === 0) 
               {
+                //Todo correcto
               this.NuevaPasswd="";
               this.RepetirPasswd="";
               this.ThirdFormGroup.invalid;
               this.dialogService.open(cccvisorpasswdokComponent, {
                 data: {Login: this.Login,
+                  TipoError: 'CambioPasswd'
                 },
                 panelClass: 'imx-messageDialog',
                 disableClose: true
             });
+            
+            this.stepper.reset();
               } 
             else {
               this.errorCheckPasswd=true;
@@ -275,7 +298,7 @@ public async EnviarPin() {
         }
 
 
-       // if len(variable)<resp4.Entities[0].Columns.MinLen.Value)
+     
   
     
 
@@ -300,6 +323,10 @@ public LimpiarErrorPaswd():void
   this.errorCheckPasswd=false;
 }
 
+public LimpiarErrorDatosRecuperacion():void
+{
+  this.errorSolicitud=false;
+}
 
 public onCodigoErrorDismissed(): void {
   this.resCodigo = true;

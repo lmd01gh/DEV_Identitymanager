@@ -31,6 +31,7 @@ import { MAT_DIALOG_DATA, MatDialogRef  } from '@angular/material/dialog';
 
 export interface visorPasswordOK {
    Login: string;
+   TipoError : string;
 }
 
 
@@ -41,10 +42,27 @@ export interface visorPasswordOK {
 })
 
 export class cccvisorpasswdokComponent {
+  
+  public _envioDatos = false;
+  public _envioDatosOK= false;
 
   constructor(private dialogRef: MatDialogRef <cccvisorpasswdokComponent>, @Inject(MAT_DIALOG_DATA) public _visorPasswordOK: visorPasswordOK,
   ) { 
     dialogRef.disableClose=true;
+  
+    if (_visorPasswordOK.TipoError=="EnvioDatos")
+      {this._envioDatos=true;
+    this._envioDatosOK=false;
+      }
+    else if (_visorPasswordOK.TipoError=="CambioPasswd")
+      {
+        this._envioDatos=false;
+      }
+    else if (_visorPasswordOK.TipoError=="EnvioDatosOK")
+     {
+      this._envioDatos=true;
+      this._envioDatosOK=true;
+     }  
   }
 
   public LdsExplanation = '#LDS#The passcode could not be created. No manager could be found for this identity. Please assign a manager to the identity or deactivate the two-person principle of passcode assignment and try again.';
