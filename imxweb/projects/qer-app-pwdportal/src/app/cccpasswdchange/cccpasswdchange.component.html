@@ -11,8 +11,8 @@
 
 
 
-  <eui-alert *ngIf="!resCodigo" type="error" [condensed]="true" [dismissable]="true"  (dismissed)="onCodigoDismissed()">
-      <span translate>Código incorrecto.</span>
+  <eui-alert *ngIf="errorCaptcha" [condensed]="true" [colored]="true" type="error"  [dismissable]="true"  (dismissed)="Anterior()">
+      <span translate>Código captcha incorrecto.</span>
   </eui-alert>
   
   <!--
@@ -25,8 +25,8 @@
     <span translate>En unos momentos recibirá un PIN para el reinicio de contraseña. Revise su cuenta o dispositivo </span>
   </eui-alert>-->
   
-  <eui-alert *ngIf="errorPascode"[condensed]="true" [colored]="true" type="error"  [dismissable]="true" (dismissed)="onCodigoErrorDismissed()" >
-    <span translate>ERROR: El código introducido no es correcto. </span>
+  <eui-alert *ngIf="errorPascode"[condensed]="true" [colored]="true" type="error"  [dismissable]="true" (dismissed)="Anterior()" >
+    <span translate>ERROR: El Pin de acceso introducido no es válido. </span>
   </eui-alert>
   <eui-alert *ngIf="errorPasswd"[condensed]="true" [colored]="true" type="error"  [dismissable]="true" (dismissed)="LimpiarErrorPaswd()" >
     <span translate>Las contraseñas no coinciden</span>
@@ -87,7 +87,7 @@
               <br>
             <mat-form-field  [style.width.px]=350>
                 <mat-label>Recibir PIN en:</mat-label>
-                  <input matInput  data-imx-identifier="Pin" [(ngModel)]="Pin" (input)="LimpiarErrorDatosRecuperacion()">
+                  <input matInput  data-imx-identifier="Pin" [(ngModel)]="Pin" >
             </mat-form-field> 
             </div>
         
@@ -96,7 +96,7 @@
             <div  *ngIf="ConPinTemporal">
               <mat-form-field>
                 <mat-label>Pin de acceso:</mat-label>
-                  <input matInput [(ngModel)]="PinAcceso" type="password" (input)="onCodigoErrorDismissed()">
+                  <input matInput [(ngModel)]="PinAcceso" type="password" (input)="Anterior()">
                 </mat-form-field> 
             </div>
         
@@ -106,7 +106,7 @@
                   <form [formGroup]="secondFormGroup" > 
                   <!--Evento que se ejecuta cuando pierde el foco (blur)="VerificarCaptcha()""-->
                       <input  placeholder="Introduzca los caracteres" formControlName="secondCtrl" type="text"
-                      [(ngModel)]="captchaSvc.Response" [attr.data-imx-identifier]="'captcha-code'" [required]="true" (input)="onCodigoErrorDismissed()"> 
+                      [(ngModel)]="captchaSvc.Response" [attr.data-imx-identifier]="'captcha-code'" [required]="true" (input)="Anterior()"> 
                   </form>
                   <imx-captcha></imx-captcha>
                   <button mat-raised-button (click)="ReinciciarCaptcha()">{{'#LDS#Refresh image' | translate}}</button>	 
@@ -122,15 +122,14 @@
               <div *ngIf="!ConPinTemporal"> 
                   <!--<button mat-raised-button   matStepperPrevious  *ngIf="!alertPin && !errorSolicitud" (click)="onCodigoErrorDismissed()"  color="primary">Anterior</button>-->
                   <!--<button mat-raised-button   *ngIf="!alertPin && !errorSolicitud" color="primary" (click)="EnviarPin()">Enviar Pin</button>-->
-                  <button mat-raised-button   matStepperPrevious  *ngIf="!alertPin" (click)="onCodigoErrorDismissed()"  color="primary">Anterior</button>
-                  <button mat-raised-button   *ngIf="!alertPin" color="primary" (click)="EnviarPin()">Enviar Pin</button>
+                  <button mat-raised-button  class="boton" matStepperPrevious     color="primary">Anterior</button>
+                  <button mat-raised-button   class="boton" color="primary" (click)="EnviarPin()">Enviar Pin</button>
                 </div>
           
             <!--Tiene Pin Temporal -->
               <div *ngIf="ConPinTemporal">
-                  <button mat-raised-button   matStepperPrevious (click)="onCodigoErrorDismissed()" color="primary">Anterior</button>
-                  
-                  <button mat-raised-button matStepperNext  [disabled]="secondFormGroup.invalid"  (click)="VerificarAcceso()" color="primary">Continuar</button>
+                  <button mat-raised-button  class="boton" matStepperPrevious (click)="Anterior()" color="primary">Anterior</button>
+                  <button mat-raised-button  class="boton" [disabled]="secondFormGroup.invalid"  (click)="VerificarAcceso()" color="primary">Aceptar</button>
                 </div> 
               </div>
             
@@ -142,25 +141,28 @@
         <mat-step class="mat-step-header">
         <ng-template matStepLabel>Establecer Nueva Contraseña</ng-template>
       
-          <div *ngIf="tercerPaso">
+          <!--<div *ngIf="tercerPaso">-->
           <!--  Establezca una nueva contraseña. Le recordamos que los cambios pueden tardar hasta un minuto en ser efectivos.-->
-          <button mat-raised-button  (click)="RequisitosPasswd()" color="primary">Requisitos de Contraseña </button>
-          <div></div>
-          <br>
-          <div></div>
+               <button mat-raised-button  (click)="RequisitosPasswd()" color="primary">Requisitos de Contraseña </button>
+               <div></div>
+               <br>
+                <div></div>
           
-          <form [formGroup]="ThirdFormGroup" >       
+         <form [formGroup]="ThirdFormGroup" >  
+         
             <div>
 
               <mat-form-field  [style.width.px]=350>
                   <mat-label>Nueva contraseña:</mat-label>
-                    <input matInput  formControlName="ThirdFormCtrl" data-imx-identifier="NuevaPasswd" value="" [(ngModel)]="NuevaPasswd" (input)="LimpiarErrorPaswd()" type="password">
+                    <input matInput  formControlName="ThirdFormCtrl" data-imx-identifier="NuevaPasswd"  [(ngModel)]="NuevaPasswd" (input)="LimpiarErrorPaswd()" type="password" required>
+                    <!--<input matInput data-imx-identifier="NuevaPasswd" value="" [(ngModel)]="NuevaPasswd" (input)="LimpiarErrorPaswd()" type="password">-->
                 </mat-form-field> 
             </div>
             <div>
                 <mat-form-field  [style.width.px]=350>
                   <mat-label>Repetir la contraseña:</mat-label>
-                    <input matInput formControlName="FourFormCtrl" data-imx-identifier="RepetirPasswd" [(ngModel)]="RepetirPasswd" (input)="LimpiarErrorPaswd()" type="password">
+                  <input matInput formControlName="FourFormCtrl" data-imx-identifier="RepetirPasswd" [(ngModel)]="RepetirPasswd" (input)="LimpiarErrorPaswd()" type="password" required>
+                  <!--  <input matInput  data-imx-identifier="RepetirPasswd" [(ngModel)]="RepetirPasswd" (input)="LimpiarErrorPaswd()" type="password">-->
                   </mat-form-field> 
             </div>
             
@@ -168,7 +170,7 @@
             
           </form>
           
-          </div>
+          <!--</div>-->
       </mat-step>
       
   </mat-stepper>

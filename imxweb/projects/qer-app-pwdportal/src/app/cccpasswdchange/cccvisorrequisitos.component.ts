@@ -29,7 +29,7 @@ import { MAT_DIALOG_DATA, MatDialogRef  } from '@angular/material/dialog';
 
 
 
-export interface visorPassword {
+export interface visorRequisitos {
    Title: string;
   HistoryLen: string;
   MaxLen: string;
@@ -39,14 +39,14 @@ export interface visorPassword {
 
 
 @Component({
-  selector: 'imx-cccvisorpaswd',
-  templateUrl: './cccvisorpaswd.component.html',
-  styleUrls: ['./cccvisorpaswd.component.scss']
+  selector: 'imx-cccvisorrequisitos',
+  templateUrl: './cccvisorrequisitos.component.html',
+  styleUrls: ['./cccvisorrequisitos.component.scss']
 })
 
-export class cccvisorpaswdComponent {
+export class cccvisorrequisitosComponent {
 
-  constructor(private dialogRef: MatDialogRef <cccvisorpaswdComponent>, @Inject(MAT_DIALOG_DATA) public _visorPassword: visorPassword,
+  constructor(private dialogRef: MatDialogRef <cccvisorrequisitosComponent>, @Inject(MAT_DIALOG_DATA) public _visorRequisitos: visorRequisitos,
   ) { 
     dialogRef.disableClose=true;
   }

@@ -1,0 +1,16 @@
+<div>
+    <h1 mat-dialog-title><b>Requisitos de Contraseña</b></h1>
+    <mat-dialog-content>
+      
+        <!--<div class="imx-message-requisitos">Su contraseña debe cumplir los siguientes requisitos (política de contraseña: {{_visorRequisitos.Title}})</div>-->
+        <div class="imx-message-requisitos">Su contraseña debe cumplir los siguientes requisitos:</div>
+        <div class="imx-message-requisitos">La longitud de la contraseña debe estar entre: {{_visorRequisitos.MinLen}} y {{_visorRequisitos.MaxLen}}</div>
+        <div class="imx-message-requisitos">Los siguientes caracteres no están permitidos en la contraseña: {{_visorRequisitos.SpecialCharsDenied}}</div>
+        <div class="imx-message-requisitos">No puede reutilizar las: {{_visorRequisitos.HistoryLen}}  anteriores</div>
+
+      <!--</ng-template>-->
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-raised-button color="primary" mat-dialog-close>cerrar</button>
+    </mat-dialog-actions>
+  </div>

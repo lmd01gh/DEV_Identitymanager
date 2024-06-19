@@ -63,7 +63,7 @@ import { PwdSqlWizardApiService } from './pwd-sql-wizard-api.service';
 import { CccpasswdchangeComponent } from './cccpasswdchange/cccpasswdchange.component';
 import { IdentitiesService } from 'qer';
 import { CaptchaModule } from 'qbm';
-import { cccvisorpaswdComponent } from './cccpasswdchange/cccvisorpaswd.component';
+import { cccvisorrequisitosComponent } from './cccpasswdchange/cccvisorrequisitos.component';
 import { cccvisorpasswdokComponent } from './cccpasswdchange/cccvisorpasswd-ok.component';
 
 
@@ -74,7 +74,7 @@ export function getBaseHref(): string {
   return location.href.includes('headless') ? HEADLESS_BASEHREF : '';
 }
 @NgModule({
-  declarations: [AppComponent,  CccpasswdchangeComponent,cccvisorpaswdComponent,cccvisorpasswdokComponent],
+  declarations: [AppComponent,  CccpasswdchangeComponent,cccvisorrequisitosComponent,cccvisorpasswdokComponent],
   imports: [
     AppRoutingModule,
     CaptchaModule,
