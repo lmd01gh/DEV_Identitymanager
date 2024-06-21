@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild, CUSTOM_ELEMENTS_SCHEMA,  Inject } from '@angular/core';
+import { Component, OnInit,ViewChild} from '@angular/core';
 import {  SplashService  } from 'qbm';
 import { CaptchaService, AppConfigService } from 'qbm';
 
@@ -53,7 +53,6 @@ export class CccpasswdchangeComponent implements OnInit {
   
   
   
-  
   PinTemporal: string;
   ConPinTemporal=false;
   UIDPerson="";
@@ -66,29 +65,11 @@ export class CccpasswdchangeComponent implements OnInit {
   NuevaPasswd="";
   //Guarda la nueva password introducda por el usuario (la repite)
   RepetirPasswd="";
- // tercerPaso=false;
- 
-
-  
-  //Se utiliza para la comprobación del captcha
- // resCodigo=true;
-
-  //public errorSolicitud=false;
-  //alertPin=false;
   errorPascode=false;
   errorPasswd=false;
   errorCheckPasswd=false;
   errorCaptcha=false;
-  
-//PinTemporalSi = "true";
-  //PinTemporalNo ="false";
-  //ruta: string;
-  //respuesta: string;
-  //userName="";
-  //editable="false";
-  
-
-  
+   
   
 
 
@@ -129,14 +110,15 @@ export class CccpasswdchangeComponent implements OnInit {
 
 public async EnviarPin() {
   
-this.messageSvc.subject.next(undefined);
-let overlayRef: OverlayRef;
+ this.messageSvc.subject.next(undefined);
+ let overlayRef: OverlayRef;
  setTimeout(() => overlayRef = this.busyService.show()); 
- let respuesta2= await this._v3Client.Customeprinsa_CCC_SolicitudOTP_get({OTP_Usuario:this.Login ,OTP_EnviarA:this.Pin})
+ const LoginTemp=this.Login;
+ console.log(LoginTemp);
+ let respuesta2= await this._v3Client.Customeprinsa_ccc_SolicitudOTP_get({OTP_Usuario:this.Login ,OTP_EnviarA:this.Pin})
  if (respuesta2 == "-1") 
   {
-    //this.errorSolicitud=true;
-    //Error no me envia el pin por error en los datos. lamo a la pantalla modal para mostrar error
+    //Error no me envia el pin por error en los datos. Llamo a la pantalla modal para mostrar error
     this.dialogService.open(cccvisorpasswdokComponent, {
       data: {Login: "No se puede encontrar una combinación de cuenta y datos de recuperación aportados.",
          TipoError: 'EnvioDatos'
@@ -145,12 +127,9 @@ let overlayRef: OverlayRef;
       disableClose: true
    });
    setTimeout(() => this.busyService.hide(overlayRef));
-    //this.alertPin=false;
+    
   }
   else{
-   
-  //this.alertPin=true;
-    //this.onCodigoCorrectoDismissed();
     this.dialogService.open(cccvisorpasswdokComponent, {
       data: {Login: "En unos momentos recibirá un PIN para el reinicio de contraseña. Revise su cuenta o dispositivo.",
          TipoError: 'EnvioDatosOK'
@@ -159,11 +138,9 @@ let overlayRef: OverlayRef;
       disableClose: true
     });
     setTimeout(() => this.busyService.hide(overlayRef));
-    this.Login="";
-    this.stepper.reset()
-  }
-  
-
+    this.stepper.previous();
+    this.ConPinTemporal=true;
+    }
 
 }
 
@@ -171,76 +148,63 @@ let overlayRef: OverlayRef;
 
 
   
-    async VerificarAcceso()
+  async VerificarAcceso()
     {
-      //this.resCodigo=true;
+  
       this.messageSvc.subject.next(undefined);
       let overlayRef: OverlayRef;
       setTimeout(() => overlayRef = this.busyService.show());
       const resp = this.captchaSvc.Response;
-      var resp1= await this._v3Client.Customeprinsa_CCC_CompruebaCaptcha_get({Codigo:resp})
+      var resp1= await this._v3Client.Customeprinsa_ccc_CompruebaCaptcha_get({Codigo:resp})
       console.log ("respuesta del captcha " + resp1);
       if (resp1 == "0" )
       {
         //captcha incorrecto
         this.captchaSvc.ReinitCaptcha();  
-        //this.errorPascode=true;
         this.errorCaptcha=true;
-        //this.tercerPaso=false;
-        //this.ThirdFormGroup.valid;
-        //this.stepper.previous();
         setTimeout(() => this.busyService.hide(overlayRef));
       }
 
       else{
    
         //si nos devuelve un 1 el captcha es correcto
-      this.messageSvc.subject.next(undefined);
-      let overlayRef: OverlayRef;
-      setTimeout(() => overlayRef = this.busyService.show());
-      try {
-        console.log(this.PinAcceso);
-          const newSession = await this.session.login({
+          this.messageSvc.subject.next(undefined);
+          let overlayRef: OverlayRef;
+          setTimeout(() => overlayRef = this.busyService.show());
+          try {
+            //console.log(this.PinAcceso);
+            const newSession = await this.session.login({
               __Product: "PasswordReset",
               Module: "Passcode",
               User: this.Login,
               Passcode: this.PinAcceso
-          });
+            });
           
-          if (newSession) {
-            setTimeout(() => this.busyService.hide(overlayRef));
-            this.errorPascode=false;
-            //this.tercerPaso=true;
-            this.UIDPerson=newSession.UserUid;
+            if (newSession) {
+              setTimeout(() => this.busyService.hide(overlayRef));
+              this.errorPascode=false;
+              this.UIDPerson=newSession.UserUid;
             
-            //console.log(newSession.IsLoggedIn);
-           //console.log(newSession.UserUid);
-           //console.log(newSession.Username);
-           //console.log(newSession);    
-           //console.log(this.PinAcceso);
-           //console.log(this.Login);
-           //Tengo que mostrar datos para cambio de contraseña
-           // console.log("Error PassCode " + this.errorPascode);
-           //console.log("Tercer Paso  " + this.tercerPaso);
-           //this.stepper.next();
-           this.stepper.next();
-          }
-          else {
-            //console.log("tercer paso en else " + this.tercerPaso);
+              //console.log(newSession.IsLoggedIn);
+              //console.log(newSession.UserUid);
+              //console.log(newSession.Username);
+              //console.log(newSession);    
+              //console.log(this.PinAcceso);
+              //console.log(this.Login);
+              //Tengo que mostrar datos para cambio de contraseña
+              // console.log("Error PassCode " + this.errorPascode);
+              //console.log("Tercer Paso  " + this.tercerPaso);
+              //this.stepper.next();
+              this.stepper.next();
+            }
+            else {
             this.errorPascode=true;
-            //this.tercerPaso=false;
-          //  this.ThirdFormGroup.valid;
-           // this.stepper.previous();
             setTimeout(() => this.busyService.hide(overlayRef));
           }
         }catch {
           setTimeout(() => this.busyService.hide(overlayRef));
           this.errorPascode=true;
-          //this.tercerPaso=false;
-         // this.ThirdFormGroup.valid;
-          //this.stepper.previous();          
-          console.log("Error pascode" + this.errorPascode)
-
+          //console.log("Error pascode" + this.errorPascode)
         }
       }
       setTimeout(() => this.busyService.hide(overlayRef));
@@ -252,19 +216,22 @@ let overlayRef: OverlayRef;
     {
       this.errorPasswd=false;
       this.errorCheckPasswd=false;
+      //Si las claves son diferentes, mostramos mensaje de error
       if (this.NuevaPasswd != this.RepetirPasswd)
         {
           this.errorPasswd=true;
         }
       else{
-        const resp4=await this._v3Client.Customeprinsa_PoliticaPassword_columnas_get({})  
+        //Las claves son iguales. Obtenemos la longitud minima de la password que debe cumplir por política
+        const resp4=await this._v3Client.Customeprinsa_ccc_PoliticaPassword_columnas_get({})  
         const Longitud=(resp4.Entities[0].Columns.MinLen.Value);
         if ((this.NuevaPasswd.length)< Longitud) 
           {
+          //si la longitud de la password introducida es menor a la exigida por política, mostramos mensaje de error
           this.errorCheckPasswd=true;
           }
         else{
-          //Grabo la nueva password
+            //Grabo la nueva password
             let overlayRef: OverlayRef;
             setTimeout(() => overlayRef = this.busyService.show());
         
@@ -281,24 +248,25 @@ let overlayRef: OverlayRef;
         
             if (results.length === 0) 
               {
-                //Todo correcto
-              this.NuevaPasswd="";
-              this.RepetirPasswd="";
-              this.ThirdFormGroup.invalid;
-              this.dialogService.open(cccvisorpasswdokComponent, {
-                data: {Login: this.Login,
-                  TipoError: 'CambioPasswd'
-                },
-                panelClass: 'imx-messageDialog',
-                disableClose: true
-            });
-            
-            this.stepper.reset();
+                  //Todo correcto. La clave se almacena correctamente
+                  this.NuevaPasswd="";
+                  this.RepetirPasswd="";
+                  this.ThirdFormGroup.invalid;
+                  this.dialogService.open(cccvisorpasswdokComponent, {
+                    data: {Login: this.Login,
+                      TipoError: 'CambioPasswd'
+                    },
+                    panelClass: 'imx-messageDialog',
+                    disableClose: true
+                });  
+                this.stepper.reset();
+                this.ConPinTemporal=false;
               } 
-            else {
-              this.errorCheckPasswd=true;
+              else {
+                //Si la contraseña no cumple la política mostramos mensaje de error
+                this.errorCheckPasswd=true;
+              }
             }
-          }
           }
 
         }
@@ -317,15 +285,6 @@ ModificaOpcionSeleccionada() : void{
   this.captchaSvc.Response="";
 }
 
-//public LimpiarVariables():void
-//{
-  //this.resCodigo = true;
-  //this.errorSolicitud=false;
- // this.alertPin=false;
-  //this.errorPascode=false;
-  //this.tercerPaso=false;
-  
-//}
 
 public LimpiarErrorPaswd():void
 {
@@ -333,44 +292,24 @@ public LimpiarErrorPaswd():void
   this.errorCheckPasswd=false;
 }
 
-//public LimpiarErrorDatosRecuperacion():void
-//{
- // this.errorSolicitud=false;
-//}
-
-//public onCodigoErrorDismissed(): void {
-  //this.resCodigo = true;
-  //ErrorSolicitud Se usa para comprobar que cuando solicite un pin me haya generado uno y me lo haya enviado correctamente
-  //this.errorSolicitud=false;
-  //alertPin se usa para mostrar mensaje de error
-  //this.alertPin=false;
-  //errorPascode se usa para mostrar error en el caso de que el pascode introducido sea incorrecto
-  //this.errorPascode=false;
-  //tercerPaso. Se usa para pasar o no a la tercera pestaña del stepper
-  //this.tercerPaso=false;
-  //error.passwd. Se usa para mostrar el error si las contraseñas no coinciden.
-//}
 
 public Anterior():void {
   this.errorPascode=false;
   this.errorCaptcha=false;
 }
 
-//public onCodigoCorrectoDismissed():void {
- // this.LimpiarVariables();
-  //this.Login="";
-  //this.Pin="";
-  //this.stepper.reset();
-//}
 
 public ReinciciarCaptcha():void{
 this.captchaSvc.ReinitCaptcha();
 }
 
 
-async  RequisitosPasswd()
+async RequisitosPasswd()
 {
-  const resp3=await this._v3Client.Customeprinsa_PoliticaPassword_columnas_get({})  
+  let overlayRef: OverlayRef;
+  setTimeout(() => overlayRef = this.busyService.show());
+  try{
+  const resp3=await this._v3Client.Customeprinsa_ccc_PoliticaPassword_columnas_get({})  
   this.dialogService.open(cccvisorrequisitosComponent, {
         data: {Title: resp3.Entities[0].Columns.DisplayName.Value,
         HistoryLen: resp3.Entities[0].Columns.HistoryLen.Value,
@@ -382,13 +321,10 @@ async  RequisitosPasswd()
         disableClose: true
     });
   
-  }
-
-  //onStepChange(event: any): void {
-    //use event.selectedIndex to know which step your user in.
-   // console.log("Estoy en la pestaña " + event.selectedIndex);  
-  //}
-
-
+} finally {
+  setTimeout(() => this.busyService.hide(overlayRef));
+}
+setTimeout(() => this.busyService.hide(overlayRef));
 }
 
+}

@@ -14,17 +14,7 @@
   <eui-alert *ngIf="errorCaptcha" [condensed]="true" [colored]="true" type="error"  [dismissable]="true"  (dismissed)="Anterior()">
       <span translate>Código captcha incorrecto.</span>
   </eui-alert>
-  
-  <!--
-  <eui-alert *ngIf="errorSolicitud"[condensed]="true" [colored]="true" type="error"  [dismissable]="true"  (dismissed)="onCodigoErrorDismissed()" >
-    <span translate>No se puede encontrar una combinación de cuenta y datos de recuperación aportados. </span>
-    <span translate>Por favor, verifique su perfil. Puede contactar con nosotros a través del telefóno de asistencia. Gracias</span>
-  </eui-alert>-->
-<!--
-  <eui-alert *ngIf="alertPin"[condensed]="true" [colored]="true" type="info"  [dismissable]="true" (dismissed)="onCodigoCorrectoDismissed()">
-    <span translate>En unos momentos recibirá un PIN para el reinicio de contraseña. Revise su cuenta o dispositivo </span>
-  </eui-alert>-->
-  
+    
   <eui-alert *ngIf="errorPascode"[condensed]="true" [colored]="true" type="error"  [dismissable]="true" (dismissed)="Anterior()" >
     <span translate>ERROR: El Pin de acceso introducido no es válido. </span>
   </eui-alert>
