@@ -114,7 +114,7 @@ public async EnviarPin() {
  let overlayRef: OverlayRef;
  setTimeout(() => overlayRef = this.busyService.show()); 
  const LoginTemp=this.Login;
- console.log(LoginTemp);
+ //console.log(LoginTemp);
  let respuesta2= await this._v3Client.Customeprinsa_ccc_SolicitudOTP_get({OTP_Usuario:this.Login ,OTP_EnviarA:this.Pin})
  if (respuesta2 == "-1") 
   {
@@ -138,7 +138,6 @@ public async EnviarPin() {
       disableClose: true
     });
     setTimeout(() => this.busyService.hide(overlayRef));
-    this.stepper.previous();
     this.ConPinTemporal=true;
     }
 
@@ -156,7 +155,6 @@ public async EnviarPin() {
       setTimeout(() => overlayRef = this.busyService.show());
       const resp = this.captchaSvc.Response;
       var resp1= await this._v3Client.Customeprinsa_ccc_CompruebaCaptcha_get({Codigo:resp})
-      console.log ("respuesta del captcha " + resp1);
       if (resp1 == "0" )
       {
         //captcha incorrecto
@@ -231,7 +229,7 @@ public async EnviarPin() {
           this.errorCheckPasswd=true;
           }
         else{
-            //Grabo la nueva password
+            //Todo correcto. Grabo la nueva password comprobando previamente la política
             let overlayRef: OverlayRef;
             setTimeout(() => overlayRef = this.busyService.show());
         
