@@ -202,7 +202,6 @@ public async EnviarPin() {
         }catch {
           setTimeout(() => this.busyService.hide(overlayRef));
           this.errorPascode=true;
-          //console.log("Error pascode" + this.errorPascode)
         }
       }
       setTimeout(() => this.busyService.hide(overlayRef));

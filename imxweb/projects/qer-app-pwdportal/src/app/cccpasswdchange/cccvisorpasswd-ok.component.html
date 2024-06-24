@@ -1,5 +1,8 @@
 <div>
-    <h1 mat-dialog-title><b>AVISO</b></h1>
+  
+    <h1  mat-dialog-title align="center"><b>AVISO</b></h1>
+  
+
     <mat-dialog-content>
 
        <div *ngIf="_envioDatos && !_envioDatosOK">
@@ -12,9 +15,10 @@
       </div>
 
       <div *ngIf="!_envioDatos">
-        <p>Contraseña cambiada con éxito para: {{_visorPasswordOK.Login}}</p>
-        <div class="imx-message-CreatePassCode">MUY IMPORTANTE: Espere unos segundos si desea acceder otra vez con las nuevas credenciales.</div>
-        <div class="imx-message-CreatePassCode">Por favor, cierre todas las ventanas con aplicaciones de Eprinsa (GEX, RES. etc...) y vuelva a abirlas con su nueva contraseña. De no hacerlo, su cuenta puede quedar bloqueada y necesitará contactar con Eprinsa para poder seguir usándola. Gracias.</div>
+        <p>Contraseña cambiada con éxito para: <b> {{_visorPasswordOK.Login}}</b></p>
+        <div class="imx-message-CambioOk">MUY IMPORTANTE: Espere unos segundos si desea acceder otra vez con las nuevas credenciales.</div>
+        <div class="imx-message-CambioOk">Por favor, cierre todas las ventanas con aplicaciones de Eprinsa (GEX, RES. etc...) y vuelva a abirlas con su nueva contraseña. </div>
+        <div class="imx-message-CambioOk">De no hacerlo, su cuenta puede quedar bloqueada y necesitará contactar con Eprinsa para poder seguir usándola. Gracias.</div>
     </div>
 
     </mat-dialog-content>

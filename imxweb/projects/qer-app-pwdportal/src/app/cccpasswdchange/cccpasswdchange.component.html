@@ -58,7 +58,7 @@
         <!--<div *ngIf="ConPinTemporal">hola</div>-->
 
              <div>
-                <button mat-raised-button *ngIf="firstFormGroup" matStepperNext color="primary">Siguiente</button>
+                <button mat-stroked-button *ngIf="firstFormGroup" matStepperNext color="primary">Siguiente</button>
               </div>
  
         </mat-step>
@@ -112,14 +112,14 @@
               <div *ngIf="!ConPinTemporal"> 
                   <!--<button mat-raised-button   matStepperPrevious  *ngIf="!alertPin && !errorSolicitud" (click)="onCodigoErrorDismissed()"  color="primary">Anterior</button>-->
                   <!--<button mat-raised-button   *ngIf="!alertPin && !errorSolicitud" color="primary" (click)="EnviarPin()">Enviar Pin</button>-->
-                  <button mat-raised-button  class="boton" matStepperPrevious     color="primary">Anterior</button>
-                  <button mat-raised-button   class="boton" color="primary" (click)="EnviarPin()">Enviar Pin</button>
+                  <button mat-stroked-button color="primary" class="boton" matStepperPrevious     color="primary">Anterior</button>
+                  <button mat-stroked-button class="boton" color="primary" (click)="EnviarPin()">Enviar Pin</button>
                 </div>
           
             <!--Tiene Pin Temporal -->
               <div *ngIf="ConPinTemporal">
-                  <button mat-raised-button  class="boton" matStepperPrevious (click)="Anterior()" color="primary">Anterior</button>
-                  <button mat-raised-button  class="boton" [disabled]="secondFormGroup.invalid"  (click)="VerificarAcceso()" color="primary">Aceptar</button>
+                  <button mat-stroked-button  class="boton" matStepperPrevious (click)="Anterior()" color="primary">Anterior</button>
+                  <button mat-stroked-button  class="boton" [disabled]="secondFormGroup.invalid"  (click)="VerificarAcceso()" color="primary">Aceptar</button>
                 </div> 
               </div>
             
@@ -156,7 +156,7 @@
                   </mat-form-field> 
             </div>
             
-            <button mat-raised-button [disabled]="ThirdFormGroup.invalid" (click)="CambiarPasswd()" color="primary">Aceptar</button>
+            <button mat-stroked-button [disabled]="ThirdFormGroup.invalid" (click)="CambiarPasswd()" color="primary">Aceptar</button>
             
           </form>
           
